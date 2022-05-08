@@ -1,233 +1,399 @@
-(function(window) {
+(function ($) {
+"use strict";
+// TOP Menu Sticky
+$(window).on('scroll', function () {
+	var scroll = $(window).scrollTop();
+	if (scroll < 400) {
+    $("#sticky-header").removeClass("sticky");
+    $('#back-top').fadeIn(500);
+	} else {
+    $("#sticky-header").addClass("sticky");
+    $('#back-top').fadeIn(500);
+	}
+});
 
-    'use strict';
 
-    $.exists = function(selector) {
-        return ($(selector).length > 0);
-    }
 
-    window.onpageshow = function(event) {
-      if (event.persisted) {
-          PageTransition(); 
+
+
+$(document).ready(function(){
+
+// mobile_menu
+var menu = $('ul#navigation');
+if(menu.length){
+	menu.slicknav({
+		prependTo: ".mobile_menu",
+		closedSymbol: '+',
+		openedSymbol:'-'
+	});
+};
+// blog-menu
+  // $('ul#blog-menu').slicknav({
+  //   prependTo: ".blog_menu"
+  // });
+
+// review-active
+$('.slider_active').owlCarousel({
+  loop:true,
+  margin:0,
+items:1,
+autoplay:true,
+navText:['<i class="ti-angle-left"></i>','<i class="ti-angle-right"></i>'],
+  nav:true,
+dots:false,
+autoplayHoverPause: true,
+autoplaySpeed: 800,
+  responsive:{
+      0:{
+          items:1,
+          nav:false,
+      },
+      767:{
+          items:1,
+          nav:false,
+      },
+      992:{
+          items:1,
+          nav:false
+      },
+      1200:{
+          items:1,
+          nav:false
+      },
+      1600:{
+          items:1,
+          nav:true
       }
-    };
+  }
+});
 
-    // All Funtions
-    PageTransition();
-    Menu();
-    ms_home_slider();
-    Sort();
-    UniteGallery();
-    ValidForm();
+// review-active
+$('.testmonial_active').owlCarousel({
+  loop:true,
+  margin:0,
+items:1,
+autoplay:true,
+navText:['<i class="ti-angle-left"></i>','<i class="ti-angle-right"></i>'],
+  nav:true,
+dots:false,
+autoplayHoverPause: true,
+autoplaySpeed: 800,
+  responsive:{
+      0:{
+          items:1,
+          dots:false,
+          nav:false,
+      },
+      767:{
+          items:1,
+          dots:false,
+          nav:false,
+      },
+      992:{
+          items:1,
+          nav:false
+      },
+      1200:{
+          items:1,
+          nav:false
+      },
+      1500:{
+          items:1
+      }
+  }
+});
 
-})(window);
+// review-active
+$('.financial_active').owlCarousel({
+  loop:true,
+  margin:0,
+items:1,
+autoplay:true,
+navText:['<i class="ti-angle-left"></i>','<i class="ti-angle-right"></i>'],
+  nav:true,
+dots:false,
+autoplayHoverPause: true,
+autoplaySpeed: 800,
 
-/*--------------------
-    Page Transition
----------------------*/
-function PageTransition() {
-    var preload = anime({
-        targets: '.ms-preloader',
-        opacity: [1, 0],
-        duration: 1000,
-        easing: 'easeInOutCubic',
-        complete: function(preload) {
-            $('.ms-preloader').css('visibility', 'hidden');
-        }
-    });
-    $('.ms-main-container').addClass('loaded');
-    var cont = anime({
-        targets: '.loaded',
-        opacity: [0, 1],
-        easing: 'easeInOutCubic',
-        duration: 1000,
-        delay: 300,
-        complete: function(preload) {
-            $('.ug-thumb-image').css({
-                'opacity': '1'
-            });
-            $('.ms-section__block img').css({
-                'opacity': '1'
-            });
-            $('.ug-thumb-wrapper, .post-item').css({
-                'pointer-events': 'auto'
-            });
-        }
-    });
-    $(document).on('click', '[data-type="page-transition"]', function(e) {
-        var url = $(this).attr('href');
-        if (url != '#' && url != '') {
-            e.preventDefault();
-            $('.ms-preloader').css('visibility', 'visible');
-            var url = $(this).attr('href');
-            var preload = anime({
-                targets: '.ms-preloader',
-                opacity: [0, 1],
-                duration: 300,
-                easing: 'easeInOutQuad',
-                complete: function(preload) {
-                    window.location.href = url;
-                }
-            });
-        }
-    });
+  responsive:{
+      0:{
+          items:1,
+          nav:false
+      },
+      767:{
+          items:1,
+          nav:false
+      },
+      992:{
+          items:1
+      },
+      1200:{
+          items:1
+      },
+      1500:{
+          items:1
+      }
+  }
+});
+
+// review-active
+$('.testmonial_active2').owlCarousel({
+  loop:true,
+  margin:0,
+items:1,
+autoplay:false,
+navText:['<i class="ti-angle-left"></i>','<i class="ti-angle-right"></i>'],
+  nav:false,
+dots:true,
+autoplayHoverPause: true,
+autoplaySpeed: 800,
+// dotsData: true,
+center: true,
+  responsive:{
+      0:{
+          items:1,
+          nav:false
+      },
+      767:{
+          items:1,
+          nav:false
+      },
+      992:{
+          items:1
+      },
+      1200:{
+          items:1
+      },
+      1500:{
+          items:1
+      }
+  }
+});
+
+// for filter
+  // init Isotope
+  var $grid = $('.grid').isotope({
+    itemSelector: '.grid-item',
+    percentPosition: true,
+    masonry: {
+      // use outer width of grid-sizer for columnWidth
+      columnWidth: 1
+    }
+  });
+
+  // filter items on button click
+  $('.portfolio-menu').on('click', 'button', function () {
+    var filterValue = $(this).attr('data-filter');
+    $grid.isotope({ filter: filterValue });
+  });
+
+  //for menu active class
+  $('.portfolio-menu button').on('click', function (event) {
+    $(this).siblings('.active').removeClass('active');
+    $(this).addClass('active');
+    event.preventDefault();
+	});
+  
+  // wow js
+  new WOW().init();
+
+  // counter 
+  $('.counter').counterUp({
+    delay: 10,
+    time: 10000
+  });
+
+/* magnificPopup img view */
+$('.popup-image').magnificPopup({
+	type: 'image',
+	gallery: {
+	  enabled: true
+	}
+});
+
+/* magnificPopup img view */
+$('.img-pop-up').magnificPopup({
+	type: 'image',
+	gallery: {
+	  enabled: true
+	}
+});
+
+/* magnificPopup video view */
+$('.popup-video').magnificPopup({
+	type: 'iframe'
+});
+
+
+  // scrollIt for smoth scroll
+  $.scrollIt({
+    upKey: 38,             // key code to navigate to the next section
+    downKey: 40,           // key code to navigate to the previous section
+    easing: 'linear',      // the easing function for animation
+    scrollTime: 600,       // how long (in ms) the animation takes
+    activeClass: 'active', // class given to the active nav element
+    onPageChange: null,    // function(pageIndex) that is called when page is changed
+    topOffset: 0           // offste (in px) for fixed top navigation
+  });
+
+  // scrollup bottom to top
+  $.scrollUp({
+    scrollName: 'scrollUp', // Element ID
+    topDistance: '4500', // Distance from top before showing element (px)
+    topSpeed: 300, // Speed back to top (ms)
+    animation: 'fade', // Fade, slide, none
+    animationInSpeed: 200, // Animation in speed (ms)
+    animationOutSpeed: 200, // Animation out speed (ms)
+    scrollText: '<i class="fa fa-angle-double-up"></i>', // Text for element
+    activeOverlay: false, // Set CSS color to display scrollUp active point, e.g '#00FFFF'
+  });
+
+
+  // blog-page
+
+  //brand-active
+$('.brand-active').owlCarousel({
+  loop:true,
+  margin:30,
+items:1,
+autoplay:true,
+  nav:false,
+dots:false,
+autoplayHoverPause: true,
+autoplaySpeed: 800,
+  responsive:{
+      0:{
+          items:1,
+          nav:false
+
+      },
+      767:{
+          items:4
+      },
+      992:{
+          items:7
+      }
+  }
+});
+
+// blog-dtails-page
+
+  //project-active
+$('.project-active').owlCarousel({
+  loop:true,
+  margin:30,
+items:1,
+// autoplay:true,
+navText:['<i class="Flaticon flaticon-left-arrow"></i>','<i class="Flaticon flaticon-right-arrow"></i>'],
+nav:true,
+dots:false,
+// autoplayHoverPause: true,
+// autoplaySpeed: 800,
+  responsive:{
+      0:{
+          items:1,
+          nav:false
+
+      },
+      767:{
+          items:1,
+          nav:false
+      },
+      992:{
+          items:2,
+          nav:false
+      },
+      1200:{
+          items:1,
+      },
+      1501:{
+          items:2,
+      }
+  }
+});
+
+if (document.getElementById('default-select')) {
+  $('select').niceSelect();
 }
 
-/*------------------
-    Menu
--------------------*/
-function Menu() {
-    if ($.exists('.hamburger')) {
-        $('.hamburger').on('click', function(e) {
-            var burger = $(this);
-            $(burger).toggleClass('is-active');
-            $('.ms-nav').toggleClass('is-visible');
-            $('.ms-header').not('.navbar-white').each(function() {
-                $('.logo-light').toggleClass('active');
-            });
-        });
-        $('.height-full-viewport').on({'mousewheel': function(e) {
-            if (e.target.id === 'el') return;
-            e.preventDefault();
-            e.stopPropagation();
-        }
-})
-    }
-}
+  //about-pro-active
+$('.details_active').owlCarousel({
+  loop:true,
+  margin:0,
+items:1,
+// autoplay:true,
+navText:['<i class="ti-angle-left"></i>','<i class="ti-angle-right"></i>'],
+nav:true,
+dots:false,
+// autoplayHoverPause: true,
+// autoplaySpeed: 800,
+  responsive:{
+      0:{
+          items:1,
+          nav:false
 
-/*------------------
-    Home Slider
--------------------*/
-    function ms_home_slider() {
-        if ($.exists('.swiper-container')) {
-            var swiper = new Swiper('.swiper-container', {
-            loop: false,
-            speed: 1000,
-            grabCursor: false,
-            mousewheel: true,
-            keyboard: true,
-            simulateTouch: false,
-            parallax: true,
-            effect: 'slide',
-            pagination: {
-                el: '.swiper-pagination',
-                type: 'progressbar',
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            }
-            });
-            $('.expanded-timeline__counter span:first-child').text('1');
-            $('.expanded-timeline__counter span:last-child').text(swiper.slides.length);
-            swiper.on('slideChange', function () {
-                $('.expanded-timeline__counter span:first-child').text(swiper.activeIndex + 1);
-            });
+      },
+      767:{
+          items:1,
+          nav:false
+      },
+      992:{
+          items:1,
+          nav:false
+      },
+      1200:{
+          items:1,
+      }
+  }
+});
 
-            }
-    }
+});
 
-/*------------------
- Sort
--------------------*/
-function Sort() {
-    if ($.exists('.filtr-container')) {
-        $('.filtr-container').filterizr();
-        $('.filtr-btn li').on('click', function() {
-            $('.filtr-btn li').removeClass('active');
-            $(this).addClass('active');
-        });
-    }
+// resitration_Form
+$(document).ready(function() {
+	$('.popup-with-form').magnificPopup({
+		type: 'inline',
+		preloader: false,
+		focus: '#name',
+
+		// When elemened is focused, some mobile browsers in some cases zoom in
+		// It looks not nice, so we disable it:
+		callbacks: {
+			beforeOpen: function() {
+				if($(window).width() < 700) {
+					this.st.focus = false;
+				} else {
+					this.st.focus = '#name';
+				}
+			}
+		}
+	});
+});
+
+
+
+//------- Mailchimp js --------//  
+function mailChimp() {
+  $('#mc_embed_signup').find('form').ajaxChimp();
 }
-/*------------------
- Unite-Gallery
--------------------*/
-function UniteGallery() {
-    if ($.exists('#gallery')) {
-        $('#gallery').unitegallery({
-            gallery_theme: 'tiles',
-            tiles_type: "justified",
-            tiles_col_width: 400,
-            tiles_justified_row_height: 400,
-            tiles_justified_space_between: 30,
-            // tile_overlay_color: "#000",
-            tile_overlay_opacity: 0.7,
-            tile_enable_icons: false,
-            tile_textpanel_position: "inside_bottom",
+mailChimp();
+
+
+
+        // Search Toggle
+        $("#search_input_box").hide();
+        $("#search").on("click", function () {
+            $("#search_input_box").slideToggle();
+            $("#search_input").focus();
         });
-    }
-}
-/*------------------
- Form Validation
--------------------*/
-function ValidForm() {
-    if ($.exists('#validForm')) {
-        $('.form-control').focus(function() {
-            $(this).prev('.control-label').addClass('active');
+        $("#close_search").on("click", function () {
+            $('#search_input_box').slideUp(500);
         });
-        $('.form-control').focusout(function() {
-            $(this).prev('.control-label').removeClass('active');
+        // Search Toggle
+        $("#search_input_box").hide();
+        $("#search_1").on("click", function () {
+            $("#search_input_box").slideToggle();
+            $("#search_input").focus();
         });
-        $("#validForm").validate({
-            ignore: ":hidden",
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 2,
-                    maxlength: 16,
-                },
-                email: {
-                    required: true,
-                    email: true,
-                },
-                subject: {
-                    required: true,
-                    minlength: 4,
-                    maxlength: 32,
-                },
-                message: {
-                    required: true,
-                    minlength: 16,
-                },
-            },
-            messages: {
-                name: {
-                    required: "<span>Please enter your name</span>",
-                    minlength: "<span>Your name must consist of at least 2 characters</span>",
-                    maxlength: "<span>The maximum number of characters - 24</span>",
-                },
-                email: {
-                    required: "<span>Please enter your email</span>",
-                    email: "<span>Please enter a valid email address.</span>",
-                },
-                subject: {
-                    required: "<span>Please enter your subject</span>",
-                    minlength: "<span>Your name must consist of at least 2 characters</span>",
-                    maxlength: "<span>The maximum number of characters - 16</span>",
-                },
-                message: {
-                    required: "<span>Please write me message</span>",
-                    minlength: "<span>Your message must consist of at least 16 characters</span>",
-                    maxlength: "<span>The maximum number of characters - 100 </span>",
-                },
-            },
-            submitHandler: function(form) {
-                $.ajax({
-                    type: "POST",
-                    url: "contact.php",
-                    data: $(form).serialize(),
-                    beforeSend: function() {
-                        // do something
-                    },
-                    success: function(data) {
-                        if (data == "Email sent!");
-                        $('input, textarea').val('');
-                        $('.form-group').blur();
-                        // do something
-                    }
-                });
-                return false;
-            }
-        });
-    }
-}
+
+})(jQuery);	
